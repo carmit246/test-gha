@@ -20,5 +20,5 @@ jobs:
           git config --global user.email "carmitbe1@gmail.com"
           git config --global user.name "carmitdanon246"
           bump2version patch
-    - name: Upgrade version
-      run: bump2version patch
+    - name: Push new version commit
+      run: git push

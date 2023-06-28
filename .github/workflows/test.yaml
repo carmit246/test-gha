@@ -9,9 +9,9 @@ jobs:
     steps:
     - name: echo
       run: echo first test
-    
+    - uses: actions/checkout@v3
     - name: Use Python v3.8
-        uses: actions/setup-python@v4.3.0
+      uses: actions/setup-python@v4.3.0
         with:
           python-version: 3.8
 

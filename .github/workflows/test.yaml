@@ -1,0 +1,12 @@
+name: add version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  runs-on: ubuntu-latest
+  first-job:
+    steps:
+    - name: echo
+      run: echo first test
+    

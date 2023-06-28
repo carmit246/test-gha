@@ -1,0 +1,10 @@
+name: add version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  steps:
+  - name: echo
+    run: echo first test
+    

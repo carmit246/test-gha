@@ -17,4 +17,9 @@ jobs:
     - name: Setup Python dependencies
       run: pip install bump2version==1.0.1
     - name: Upgrade version
+        run: |
+          git config --global user.email "carmitbe1@gmail.com"
+          git config --global user.name "carmit246"
+          bump2version patch
+    - name: Upgrade version
       run: bump2version patch

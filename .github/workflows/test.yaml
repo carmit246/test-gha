@@ -10,3 +10,13 @@ jobs:
     - name: echo
       run: echo first test
     
+    - name: Use Python v3.8
+        uses: actions/setup-python@v4.3.0
+        with:
+          python-version: 3.8
+
+      - name: Setup Python dependencies
+        run: pip install bump2version==1.0.1
+
+      - name: Upgrade version
+        run: bump2version patch --dry-run --list

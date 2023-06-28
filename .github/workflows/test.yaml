@@ -17,4 +17,4 @@ jobs:
     - name: Setup Python dependencies
       run: pip install bump2version==1.0.1
     - name: Upgrade version
-      run: bump2version patch --dry-run --list
+      run: bump2version patch

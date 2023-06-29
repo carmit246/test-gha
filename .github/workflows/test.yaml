@@ -29,7 +29,7 @@ jobs:
            env
            echo $GITHUB_RUN_NUMBER
            MYSHELL=`echo $GITHUB_RUN_NUMBER| sed s/GITHUB_RUN_NUMBER=//| tr '\n' ' '`
-           echo "SHELL:${MYSHELL}" >> $GITHUB_OUTPUT
+           echo "SHELL=${MYSHELL}" >> $GITHUB_OUTPUT
     - name: get-output
       run: echo ${{ env.get-envs.outputs.MYSHELL }}
     

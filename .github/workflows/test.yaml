@@ -3,11 +3,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  first-job:
+  version-update:
     runs-on: ubuntu-latest
     steps:
-    - name: echo
-      run: echo first test
     - uses: actions/checkout@v3
     - name: Use Python v3.8
       uses: actions/setup-python@v4.3.0
@@ -22,3 +20,15 @@ jobs:
           bump2version patch
     - name: Push new version commit
       run: git push
+  test-output:
+    runs-on: ubuntu-latest
+    steps:
+    - name: get-envs
+      id: get-envs
+      run: |
+           echo $SHELL
+           $MYSHELL=`echo $SHELL| sed s/SHELL=//| tr '\n' ' '`
+           echo "SHELL:${MYSHELL}" >> $GITHUB_OUTPUT
+    - name: get-output
+      run: echo ${{ env.get-envs.outputs.MYSHELL }}
+    

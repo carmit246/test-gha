@@ -32,5 +32,5 @@ jobs:
            echo ${RUN_NUMBER}
            echo "RUN_NUMBER=${RUN_NUMBER}" >> $GITHUB_OUTPUT
     - name: get-output
-      run: echo ${{ env.get-envs.outputs.RUN_NUMBER }}
+      run: echo ${{ steps.get-envs.outputs.RUN_NUMBER }}
     

@@ -6,8 +6,9 @@ on:
       - opened
       - edited
   push:
-    branches: ["feature-branch-3"]
-      
+    branches: 
+    - feature-branch-3
+    - main     
 jobs:
   get-branch:
     runs-on: ubuntu-latest

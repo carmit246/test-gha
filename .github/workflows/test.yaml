@@ -6,7 +6,7 @@ on:
       - opened
       - edited
   push:
-    branches: ["feature-branch-2"]
+    branches: ["feature-branch-3"]
       
 jobs:
   get-branch:

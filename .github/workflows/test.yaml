@@ -17,6 +17,7 @@ jobs:
       run: |
         BRANCH=${{ github.head_ref || github.ref_name }}
         echo $BRANCH
+        echo 1
   version-update:
     runs-on: ubuntu-latest
     steps:

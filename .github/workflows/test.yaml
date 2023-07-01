@@ -1,13 +1,24 @@
 name: add version
 on:
   workflow_dispatch:
-
+  pull_request:
+    types:
+      - opened
+      - edited
+  push:
+    branches: ["feature-branch-2"]
+      
 jobs:
-  first-job:
+  get-branch:
     runs-on: ubuntu-latest
     steps:
-    - name: echo
-      run: echo first test
+    - name: echo-branch
+      run: |
+        BRANCH=${{ github.head_ref || github.ref_name }}
+        echo $BRANCH
+  version-update:
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/checkout@v3
     - name: Use Python v3.8
       uses: actions/setup-python@v4.3.0
@@ -20,5 +31,18 @@ jobs:
           git config --global user.email "carmitbe1@gmail.com"
           git config --global user.name "carmitdanon246"
           bump2version patch
-    - name: Upgrade version
-      run: bump2version patch
+    - name: Push new version commit
+      run: git push
+  test-output:
+    runs-on: ubuntu-latest
+    steps:
+    - name: get-envs
+      id: get-envs
+      run: |
+           env
+           echo $GITHUB_RUN_NUMBER
+           RUN_NUMBER=`echo $GITHUB_RUN_NUMBER| tr '\n' ' '`
+           echo ${RUN_NUMBER}
+           echo "RUN_NUMBER=${RUN_NUMBER}" >> $GITHUB_OUTPUT
+    - name: get-output
+      run: echo ${{ steps.get-envs.outputs.RUN_NUMBER }}

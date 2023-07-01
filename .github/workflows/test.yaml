@@ -13,9 +13,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: echo-branch
-      env:
-        RUNID_VERSION_SUFFIX: ${{ github.run_id }}.${{ github.run_attempt }}
-      run: echo ${{ env.RUNID_VERSION_SUFFIX}}
+      run: |
+        BRANCH=${{ github.head_ref || github.ref_name }}
+        echo $BRANCH
   version-update:
     runs-on: ubuntu-latest
     steps:

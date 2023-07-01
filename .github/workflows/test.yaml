@@ -1,8 +1,21 @@
 name: add version
 on:
   workflow_dispatch:
-
+  pull_request:
+    types:
+      - opened
+      - edited
+  push:
+    branches: ["feature-branch-2"]
+      
 jobs:
+  get-branch:
+    runs-on: ubuntu-latest
+    steps:
+    - name: echo-branch
+      env:
+        RUNID_VERSION_SUFFIX: ${{ github.run_id }}.${{ github.run_attempt }}
+      run: echo ${{ env.RUNID_VERSION_SUFFIX}}
   version-update:
     runs-on: ubuntu-latest
     steps:
@@ -33,4 +46,3 @@ jobs:
            echo "RUN_NUMBER=${RUN_NUMBER}" >> $GITHUB_OUTPUT
     - name: get-output
       run: echo ${{ steps.get-envs.outputs.RUN_NUMBER }}
-    

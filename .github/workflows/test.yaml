@@ -19,6 +19,7 @@ jobs:
         echo $BRANCH
         EVENT=${{ github.event_name  }}
         echo $EVENT
+        echo ${{ github.event_type  }}
   version-update:
     if: ${{ inputs.branch == 'main' }} && ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest

@@ -17,8 +17,9 @@ jobs:
       run: |
         BRANCH=${{ github.head_ref || github.ref_name }}
         echo $BRANCH
+        echo ${{ inputs.event }}
   version-update:
-    if: ${{ inputs.branch == 'main' && inputs.event == 'push' }}
+    if: ${{ inputs.branch == 'main' }} && {{ inputs.event == 'push' }}
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3

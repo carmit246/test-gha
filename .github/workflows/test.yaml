@@ -2,9 +2,6 @@ name: add version
 on:
   workflow_dispatch:
   pull_request:
-    types:
-      - opened
-      - edited
   push:
     branches: 
     - feature-branch-3
@@ -17,12 +14,12 @@ jobs:
       run: |
         BRANCH=${{ github.head_ref || github.ref_name }}
         echo $BRANCH
-        EVENT=${{ github.event_name  }}
-        echo $EVENT
     - name: echo-commit-hash
       run: |
         COMMIT_HASH=${{ github.sha }}
         echo $COMMIT_HASH
+        SHORT_SHA=`echo $COMMIT_HASH | cut -c1-7`
+        echo $SHORT_SHA
   version-update:
     if: ${{ inputs.branch == 'main' }} && ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest

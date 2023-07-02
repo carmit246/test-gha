@@ -2,9 +2,6 @@ name: add version
 on:
   workflow_dispatch:
   pull_request:
-    types:
-      - opened
-      - edited
   push:
     branches: 
     - feature-branch-3

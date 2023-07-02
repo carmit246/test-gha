@@ -2,10 +2,10 @@ name: add version
 on:
   workflow_dispatch:
   pull_request:
-  push:
-    branches: 
-    - feature-branch-3
-    - main     
+#   push:
+#     branches: 
+#     - feature-branch-3
+#     - main     
 jobs:
   get-branch:
     runs-on: ubuntu-latest

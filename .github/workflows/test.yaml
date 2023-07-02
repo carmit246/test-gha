@@ -19,6 +19,10 @@ jobs:
         echo $BRANCH
         EVENT=${{ github.event_name  }}
         echo $EVENT
+    - name: echo-commit-hash
+      run: |
+        COMMIT_HASH=${{ github.sha }}
+        echo $COMMIT_HASH
   version-update:
     if: ${{ inputs.branch == 'main' }} && ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest

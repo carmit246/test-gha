@@ -16,7 +16,10 @@ jobs:
         echo $BRANCH
         SHORT_SHA=$(git rev-parse --short HEAD | cut -c1-7)
         echo $SHORT_SHA
-        
+    - name: echo-commit-hash
+      run: |
+        COMMIT_HASH=${{ github.sha }}
+        echo $COMMIT_HASH
   version-update:
     if: ${{ inputs.branch == 'main' }} && ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest

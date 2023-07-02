@@ -17,9 +17,9 @@ jobs:
       run: |
         BRANCH=${{ github.head_ref || github.ref_name }}
         echo $BRANCH
-        EVENT=${{ github.event_name  }}
-        echo $EVENT
-        echo ${{ github.event_type  }}
+        SHORT_SHA=$(git rev-parse --short HEAD | cut -c1-7)
+        echo $SHORT_SHA
+        
   version-update:
     if: ${{ inputs.branch == 'main' }} && ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest

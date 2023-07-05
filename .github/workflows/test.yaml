@@ -7,7 +7,7 @@ on:
     - feature-branch-3
     - main     
 jobs:
-  get-branch:
+  get-branch: 
     runs-on: ubuntu-latest
     steps:
     - name: echo-branch

@@ -13,7 +13,7 @@ jobs:
     - run: |
         echo run_id=${{ github.run_id }}      
         echo job=${{ github.job }}
-        echo url=https://github.com/carmit246/test-gha/actions/runs/${{ github.run_id }}/jobs/${{ github.job }}
+        echo url=https://github.com/carmit246/test-gha/actions/runs/${{ github.run_id }}
   get-branch:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request' }}

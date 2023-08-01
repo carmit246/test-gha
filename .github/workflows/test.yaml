@@ -1,5 +1,7 @@
 name: add version
 on:
+#   schedule:
+#     - cron:  '25 17 * * *'
   workflow_dispatch:
   pull_request:
   push:
@@ -9,17 +11,29 @@ on:
 jobs:
   get-branch: 
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
     - name: echo-branch
+      id: echo-branch
       run: |
         BRANCH=${{ github.head_ref || github.ref_name }}
-        echo $BRANCH
-    - name: echo-commit-hash
+        echo "BRANCH=$BRANCH" >> $GITHUB_OUTPUT
+        BASE_BRANCH=${{ github.event.pull_request.base.ref }}
+        echo "BASE_BRANCH=$BASE_BRANCH"
+        HEAD_BRANCH=${{ github.event.pull_request.head.ref }}
+        echo "HEAD_BRANCH=$HEAD_BRANCH"
+    - name: get-commit-hash
+      id: get-commit-hash
       run: |
         COMMIT_HASH=${{ github.sha }}
-        echo $COMMIT_HASH
+        echo "COMMIT_HASH=$COMMIT_HASH" >> $GITHUB_OUTPUT
         SHORT_SHA=`echo $COMMIT_HASH | cut -c1-7`
-        echo $SHORT_SHA
+        echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_OUTPUT
+    - name: set-image-tag
+      run: |
+        IMAGE_TAG=${{ steps.echo-branch.outputs.BRANCH }}-${{ steps.get-commit-hash.outputs.SHORT_SHA }}
+        echo $IMAGE_TAG
+                
   version-update:
     if: ${{ inputs.branch == 'main' }} && ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest

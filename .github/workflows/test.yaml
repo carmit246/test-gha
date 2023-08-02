@@ -50,11 +50,11 @@ jobs:
       run: |
           git config --global user.email "carmitbe1@gmail.com"
           git config --global user.name "carmitdanon246"
+          git checkout -b test-pr
           bump2version patch
     - name: Push new version commit
       run: |
-        git checkout -b
-        git commit -m "tetst commit" 
+        git commit -m "test commit" 
         git push --set-upstream origin test-pr
         gh pr create --base main --head test-pr --title "test gha pr" --repo carmit246/test-gha
 #       git push

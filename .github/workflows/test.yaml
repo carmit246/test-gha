@@ -39,6 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+    
     - name: Use Python v3.8
       uses: actions/setup-python@v4.3.0
       with:
@@ -52,6 +53,8 @@ jobs:
           bump2version patch
     - name: Push new version commit
       run: |
+        git checkout -b
+        git commit -m "tetst commit" 
         git push --set-upstream origin test-pr
         gh pr create --base main --head test-pr --title "test gha pr" --repo carmit246/test-gha
 #       git push

@@ -56,7 +56,7 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.PAT }}
       run: |
-        git commit -m "test commit" 
+        # git commit -m "test commit" 
         git push --set-upstream origin test-pr
         gh pr create --base main --head test-pr --title "test gha pr" --body "test gha pr" --repo carmit246/test-gha
         WAIT_TIME=0

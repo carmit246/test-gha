@@ -58,8 +58,12 @@ jobs:
       run: |
         # git commit -m "test commit" 
         git push --set-upstream origin test-pr
-        gh pr create --base main --head test-pr --title "test gha pr" --body "test gha pr" --repo carmit246/test-gha
-#       git push
+        # gh pr create --base main --head test-pr --title "test gha pr" --body "test gha pr" --repo carmit246/test-gha
+        WAIT_TIME=0
+        until [ $WAIT_TIME -eq 10 ] || gh pr merge --admin --delete-branch --squash test-pr; do
+          WAIT_TIME=$(( WAIT_TIME + 1 ))
+          sleep $WAIT_TIME
+        done
      
   test-output:
     runs-on: ubuntu-latest

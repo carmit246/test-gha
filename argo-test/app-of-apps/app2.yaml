@@ -8,7 +8,7 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/carmit246/test-gha.git'
-    path: argo-test/app1
+    path: argo-test/app2
     targetRevision: main
     helm:
       valueFiles:

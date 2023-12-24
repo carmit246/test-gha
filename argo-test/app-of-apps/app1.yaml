@@ -18,5 +18,11 @@ spec:
     server: 'https://kubernetes.default.svc'
     namespace: app1
   syncPolicy:
+  managedNamespaceMetadata:
+      labels:
+        test: 1
+        # app: app1
+      annotations: # The annotations to set on the application namespace
+        test: 1
     syncOptions:
       - CreateNamespace=true

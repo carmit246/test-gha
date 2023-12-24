@@ -19,4 +19,4 @@ spec:
     namespace: app1
   syncPolicy:
     syncOptions:
-      - CreateNamespace=true
+      # - CreateNamespace=true

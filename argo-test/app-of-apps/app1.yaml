@@ -22,7 +22,7 @@ spec:
       labels:
         test: 1
         # app: app1
-      annotations: # The annotations to set on the application namespace
+      annotations:
         test: 1
     syncOptions:
       - CreateNamespace=true

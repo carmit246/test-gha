@@ -11,15 +11,13 @@ jobs:
 - name: increment version
   shell: bash
   run: |
-  command="grep -Po \"version: \\d*.\\K(\\d)*(?=\\d*)\" argo-test/app1/Chart.yaml"
-  echo $command
-  current_version=$(command)
-  # echo $current_version
-  # new_version=$current_version+1
-  # echo "current_version=$current_version new_version=$new_version"
-  # message=$(sed -i "s/^version: .*/version: 0.$new_version.0/" test/app1/Chart.yaml)
-  # git commit -m $message
-  # git push
+    current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" argo-test/app1/Chart.yaml)
+    echo $current_version
+    new_version=$current_version+1
+    echo "current_version=$current_version new_version=$new_version"
+    message=$(sed -i "s/^version: .*/version: 0.$new_version.0/" test/app1/Chart.yaml)
+    git commit -m $message
+    # git push
 
 - name: package release
   shell: bash

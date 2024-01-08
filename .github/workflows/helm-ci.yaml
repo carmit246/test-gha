@@ -30,8 +30,8 @@ jobs:
     - name: Install Helm
       uses: azure/setup-helm@v3
     
-    # - name: package release
-    #   shell: bash
-    #   run: |
-    #   helm package test/app1
-    #   ls -l
+    - name: package release
+      shell: bash
+      run: |
+      helm package test/app1
+      ls -l

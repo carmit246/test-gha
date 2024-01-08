@@ -1,9 +1,9 @@
 name: Helm ci
 on:
-push:
-  paths:
-  - 'argo-test/app1/**'
-  - '.github/**'
+  push:
+    paths:
+    - 'argo-test/app1/**'
+    - '.github/**'
 
 jobs:
   helm-ci:

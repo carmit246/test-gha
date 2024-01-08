@@ -27,8 +27,8 @@ jobs:
         git commit -m "$message"
         git push
     
-    - name: install helm
-      run: echo install helm
+    - name: Install Helm
+      uses: azure/setup-helm@v3
     
     # - name: package release
     #   shell: bash

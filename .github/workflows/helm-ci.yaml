@@ -20,8 +20,10 @@ jobs:
         new_version=$((current_version+1))
         echo "current_version=$current_version new_version=$new_version"
         message=$(sed -i "s/^version: .*/version: 0.$new_version.0/" argo-test/app1/Chart.yaml)
-        git commit -m $message
-        # git push
+        git config --global user.email "test@test.com"
+        git config --global user.name "test"
+        git commit -m "$message"
+        git push
     
     - name: install helm
       run: echo install helm

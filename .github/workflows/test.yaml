@@ -3,11 +3,11 @@ on:
 #   schedule:
 #     - cron:  '25 17 * * *'
   workflow_dispatch:
-  pull_request:
-  push:
-    branches: 
-    - feature-branch-3
-    - main     
+  # pull_request:
+  # push:
+  #   branches: 
+  #   - feature-branch-3
+  #   - main     
 jobs:
   get-branch:
     runs-on: ubuntu-latest

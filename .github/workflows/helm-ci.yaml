@@ -3,27 +3,31 @@ on:
 push:
   paths:
   - 'argo-test/app1/**'
+  - '.github/**'
 
 jobs:
-- name: Checkout
-  uses: actions/checkout@v4
-
-- name: increment version
-  shell: bash
-  run: |
-    current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" argo-test/app1/Chart.yaml)
-    echo $current_version
-    new_version=$current_version+1
-    echo "current_version=$current_version new_version=$new_version"
-    message=$(sed -i "s/^version: .*/version: 0.$new_version.0/" test/app1/Chart.yaml)
-    git commit -m $message
-    # git push
-
-- name: install helm
-  run: echo install helm
-
-# - name: package release
-#   shell: bash
-#   run: |
-#   helm package test/app1
-#   ls -l
+  helm-ci:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+    
+    - name: increment version
+      shell: bash
+      run: |
+        current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" argo-test/app1/Chart.yaml)
+        echo $current_version
+        new_version=$current_version+1
+        echo "current_version=$current_version new_version=$new_version"
+        message=$(sed -i "s/^version: .*/version: 0.$new_version.0/" test/app1/Chart.yaml)
+        git commit -m $message
+        # git push
+    
+    - name: install helm
+      run: echo install helm
+    
+    # - name: package release
+    #   shell: bash
+    #   run: |
+    #   helm package test/app1
+    #   ls -l

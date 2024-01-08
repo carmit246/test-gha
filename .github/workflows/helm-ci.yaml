@@ -18,6 +18,7 @@ jobs:
   git push
 
 - name: package release
+  shell: bash
   run: |
   helm package test/app1
   ls -l

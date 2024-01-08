@@ -18,8 +18,9 @@ jobs:
         current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" argo-test/app1/Chart.yaml)
         echo $current_version
         new_version=$((current_version+1))
-        echo "current_version=$current_version new_version=$new_version"
-        message=$(sed -i "s/^version: .*/version: 0.$new_version.0/" argo-test/app1/Chart.yaml)
+        message=="current_version=$current_version new_version=$new_version"
+        echo "$message"
+        sed -i "s/^version: .*/version: 0.$new_version.0/" argo-test/app1/Chart.yaml
         git config --global user.email "test@test.com"
         git config --global user.name "test"
         git add argo-test/app1/Chart.yaml

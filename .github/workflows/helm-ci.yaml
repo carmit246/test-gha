@@ -14,6 +14,8 @@ jobs:
     
     - name: check for changes
       run: |
+        git fetch origin
+        git remote set-url origin git@github.com/carmit246
         git diff --name-only HEAD HEAD~1 argo-test| sed 's/argo-test\///'| sed 's/\/.*//'
         CHARTS=$(git diff --name-only argo-test| sed 's/argo-test\///'| sed 's/\/.*//')
         echo "charts=${CHARTS}" >> $GITHUB_OUTPUT

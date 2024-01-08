@@ -14,7 +14,7 @@ jobs:
     
     - name: check for changes
       run: |
-        git diff --name-only argo-test| sed 's/argo-test\///'| sed 's/\/.*//'
+        git diff --name-only HEAD HEAD~1 argo-test| sed 's/argo-test\///'| sed 's/\/.*//'
         CHARTS=$(git diff --name-only argo-test| sed 's/argo-test\///'| sed 's/\/.*//')
         echo "charts=${CHARTS}" >> $GITHUB_OUTPUT
 

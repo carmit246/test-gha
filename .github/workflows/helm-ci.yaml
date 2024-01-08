@@ -22,6 +22,7 @@ jobs:
         message=$(sed -i "s/^version: .*/version: 0.$new_version.0/" argo-test/app1/Chart.yaml)
         git config --global user.email "test@test.com"
         git config --global user.name "test"
+        git add argo-test/app1/Chart.yaml
         git commit -m "$message"
         git push
     

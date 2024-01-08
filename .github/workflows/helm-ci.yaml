@@ -19,8 +19,11 @@ jobs:
     git commit -m $message
     # git push
 
-- name: package release
-  shell: bash
-  run: |
-  helm package test/app1
-  ls -l
+- name: install helm
+  run: echo install helm
+
+# - name: package release
+#   shell: bash
+#   run: |
+#   helm package test/app1
+#   ls -l

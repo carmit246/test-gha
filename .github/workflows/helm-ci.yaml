@@ -29,9 +29,11 @@ jobs:
     
     - name: Install Helm
       uses: azure/setup-helm@v3
+      with:
+        version: "3.9.0"
     
     - name: package release
       shell: bash
       run: |
-      helm package test/app1
-      ls -l
+        helm package test/app1
+        ls -l

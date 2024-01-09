@@ -6,20 +6,37 @@ on:
     - '.github/**'
 
 jobs:
-  helm-ci:
+  find-charts:
     runs-on: ubuntu-latest
+    outputs: 
+      CHARTS_TO_BUILD: ${{ steps.find-charts.outputs.CHARTS_TO_BUILD }} 
     steps:
     - name: checkout
       uses: actions/checkout@v4
     
     - name: check for changes
+      id: find-charts
       run: |
         git fetch origin
-        git remote set-url origin git@github.com/carmit246
+        git remote set-url origin ithub.com:carmit246/test-gha
+        FOLDERS=("argo-test/app1" "argo-test/app2")
+        for folder in $FOLDERS; do
+          git diff --quiet --name-only HEAD HEAD~1 $folder| sed 's/ci-cd\///'| sed 's/\/.*//'
+          res=$(git diff --quiet--name-only argo-test| sed 's/argo-test\///'| sed 's/\/.*//')
+          if [[ $res ]];do
+            echo "changed: " $res
+            CHARTS_TO_BUILD+=($folder)
+          done
+        done
         git diff --name-only HEAD HEAD~1 argo-test| sed 's/argo-test\///'| sed 's/\/.*//'
-        CHARTS=$(git diff --name-only argo-test| sed 's/argo-test\///'| sed 's/\/.*//')
-        echo "charts=${CHARTS}" >> $GITHUB_OUTPUT
-
+        echo "CHARTS_TO_BUILD=${CHARTS}" >> $GITHUB_OUTPUT
+  
+  package-chart:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        value: ${{ needs.find-charts.output.CHARTS_TO_BUILD }}
+    steps:
     - name: increment version
       shell: bash
       run: |

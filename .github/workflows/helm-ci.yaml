@@ -23,12 +23,13 @@ jobs:
       id: find-charts
       shell: bash
       run: |
-        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| sed 's/\/.*//'| tr '\n' ','| uniq '
-        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| sed 's/\/.*//' | tr '\n' ','| uniq)
+        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| sed 's/\/.*//'| uniq '
+        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/${{ env.CHARTS_DIR }}\///'| sed 's/\/.*//' | uniq)
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
           echo "${{ env.CHARTS_DIR }}/$folder,"
-          CHARTS_TO_BUILD+=("${{ env.CHARTS_DIR }}/$folder,")
+          CHARTS_TO_BUILD+=(${{ env.CHARTS_DIR }}/$folder)
+          CHARTS_TO_BUILD+=(",")
           echo "CHARTS_TO_BUILD=$CHARTS_TO_BUILD"
         done
         echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"

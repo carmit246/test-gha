@@ -34,7 +34,7 @@ jobs:
         echo $CHARTS_TO_BUILD| tr '\n' ','| sed 's/,$//'
         charts=$(echo $CHARTS_TO_BUILD| tr '\n' ','| sed 's/,$//')
         echo CHARTS_TO_BUILD=\"{\"charts\":[\"${charts}\"]}\"
-        echo "CHARTS_TO_BUILD={\"charts\":[\"$charts"]}" >> $GITHUB_OUTPUT
+        echo "CHARTS_TO_BUILD={\"charts\":[\"$charts\"]}" >> $GITHUB_OUTPUT
 
   package-chart:
     runs-on: ubuntu-latest

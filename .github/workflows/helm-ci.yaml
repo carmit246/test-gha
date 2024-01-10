@@ -33,14 +33,15 @@ jobs:
             CHARTS_TO_BUILD+=($folder)
           fi
         done
-        echo "Charts to build: $CHARTS_TO_BUILD"
+        echo "Charts to build: [\"$CHARTS_TO_BUILD\"]"
         echo "CHARTS_TO_BUILD=[\"${CHARTS_TO_BUILD}\"]" >> $GITHUB_OUTPUT
 
   package-chart:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        value: ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
+        value: '["argo-test/app1","argo-test/app2"]'
+        #${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
     steps:
     - name: increment version
       shell: bash

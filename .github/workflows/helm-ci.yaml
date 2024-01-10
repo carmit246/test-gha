@@ -62,6 +62,7 @@ jobs:
     #       fi
         
     - name: increment version
+      needs: find-charts
       # if: ${{ steps.find-charts.outputs.CHANGED == 'true' }}
       shell: bash
       run: |

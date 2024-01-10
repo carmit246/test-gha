@@ -23,7 +23,7 @@ jobs:
       id: find-charts
       shell: bash
       run: |
-        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| sed 's/\/.*//'| uniq '
+        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| sed 's/\/.*//'| uniq
         FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/${{ env.CHARTS_DIR }}\///'| sed 's/\/.*//' | uniq)
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do

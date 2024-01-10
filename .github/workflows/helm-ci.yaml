@@ -6,7 +6,7 @@ on:
     - '.github/**'
 
 env:
-  folders: ["argo-test/app1","argo-test/app2"]
+  folders: '["argo-test/app1","argo-test/app2"]'
 
 jobs:
   find-charts:

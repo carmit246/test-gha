@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        value: '["argo-test/app1","argo-test/app2"]'
+        value: ["argo-test/app1","argo-test/app2"]
         #${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
     steps:
     - name: increment version

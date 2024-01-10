@@ -34,13 +34,12 @@ jobs:
           fi
         done
         echo Charts to build: \"[\"${CHARTS_TO_BUILD}\"]\"
-        echo "CHARTS_TO_BUILD=\"[${CHARTS_TO_BUILD}]\"" >> $GITHUB_OUTPUT
+        echo "CHARTS_TO_BUILD=\"chart: [${CHARTS_TO_BUILD}]\"" >> $GITHUB_OUTPUT
 
   package-chart:
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        value: ${{ fromJson(needs.find-charts.outputs.CHARTS_TO_BUILD) }}
+      matrix: ${{ fromJson(needs.find-charts.outputs.CHARTS_TO_BUILD) }}
         # ["argo-test/app1","argo-test/app2"]
         
     steps:

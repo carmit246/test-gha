@@ -25,7 +25,7 @@ jobs:
         FOLDERS=("argo-test/app1 argo-test/app2")
         for folder in $FOLDERS; do
           echo $folder
-          git diff --name-only HEAD~1 $folder
+          git diff --name-only HEAD~1
           res=$(git diff --name-only HEAD~1 $folder | sed 's/argo-test\///'| sed 's/\/.*//')
           if [[ $res ]];then
             echo "changed: " $res

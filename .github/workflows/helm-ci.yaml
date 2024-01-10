@@ -38,6 +38,7 @@ jobs:
 
   package-chart:
     runs-on: ubuntu-latest
+    needs: find-charts
     # strategy:
     #   matrix: 
     #     charts: ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
@@ -62,7 +63,6 @@ jobs:
     #       fi
         
     - name: increment version
-      needs: find-charts
       # if: ${{ steps.find-charts.outputs.CHANGED == 'true' }}
       shell: bash
       run: |

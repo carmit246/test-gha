@@ -75,5 +75,6 @@ jobs:
       run: |
         helm package ${{ matrix.charts }}
         chart=$(echo ${{ matrix.charts }} | sed 's/argo-test\///'| sed 's/\/.*//')
-        ls -l| grep $chart
+        echo $chart
+        ls -l | grep ${chart}
         echo ":white_check_mark: New helm chart release published: ${{ chart }}:steps.chart-version.outputs.VERSION " >> $GITHUB_STEP_SUMMARY

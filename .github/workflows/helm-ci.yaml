@@ -6,7 +6,7 @@ on:
     - '.github/**'
 
 env:
-  folders: '["argo-test/app1","argo-test/app2"]'
+  HELM_FOLDERS: "[argo-test/app1,argo-test/app2]"
 
 jobs:
   find-charts:
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        value: ${{ env.folders }}
+        value: ${{ env.HELM_FOLDERS }}
     steps:
     - name: increment version
       shell: bash

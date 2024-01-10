@@ -56,12 +56,12 @@ jobs:
           res=$(git diff --name-only HEAD~1 ${{ matrix.value }})
           if [[ $res ]];then
             echo "changed: " $res
-            echo "CHANGED=true" >>$GITHUB_OUTPUT
-          else echo "CHANGED=false" >>$GITHUB_OUTPUT
+            echo "CHANGED=true" >> $GITHUB_OUTPUT
+          else echo "CHANGED=false" >> $GITHUB_OUTPUT
           fi
         
     - name: increment version
-      if: ${{ needs.find-charts.outputs.CHANGED == true }}
+      if: ${{ needs.find-charts.outputs.CHANGED == 'true' }}
       shell: bash
       run: |
         echo ${{ matrix.value }}

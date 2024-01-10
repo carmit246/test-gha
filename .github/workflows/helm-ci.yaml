@@ -21,14 +21,14 @@ jobs:
         git remote set-url origin github.com:carmit246/test-gha
         FOLDERS=("argo-test/app1" "argo-test/app2")
         for folder in $FOLDERS; do
-          git diff --name-only HEAD -- $folder | sed 's/ci-cd\///'| sed 's/\/.*//'
+          git diff --name-only HEAD -- $folder
           res=$(git diff --name-only HEAD -- $folder | sed 's/argo-test\///'| sed 's/\/.*//')
           if [[ $res ]];then
             echo "changed: " $res
             CHARTS_TO_BUILD+=($folder)
           fi
         done
-        git diff --name-only HEAD HEAD~1 argo-test| sed 's/argo-test\///'| sed 's/\/.*//'
+        # git diff --name-only HEAD HEAD~1 argo-test| sed 's/argo-test\///'| sed 's/\/.*//'
         echo "CHARTS_TO_BUILD=${CHARTS}" >> $GITHUB_OUTPUT
   
   package-chart:

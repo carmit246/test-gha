@@ -4,4 +4,4 @@ metadata:
   name: test-cm
 data:
   param1: "a"
-  param2: "b" 
+  param2: "b"

@@ -26,7 +26,7 @@ jobs:
           if [[ $res ]];then
             echo "changed: " $res
             CHARTS_TO_BUILD+=($folder)
-          done
+          fi
         done
         git diff --name-only HEAD HEAD~1 argo-test| sed 's/argo-test\///'| sed 's/\/.*//'
         echo "CHARTS_TO_BUILD=${CHARTS}" >> $GITHUB_OUTPUT

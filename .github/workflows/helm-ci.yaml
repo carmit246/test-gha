@@ -26,7 +26,7 @@ jobs:
           res=$(git diff --name-only HEAD~1 $folder | sed 's/argo-test\///'| sed 's/\/.*//')
           if [[ $res ]];then
             echo "changed: " $res
-            CHARTS_TO_BUILD+=($folder)
+            CHARTS_TO_BUILD+=("$folder")
           fi
         done
         echo "Charts to build: $CHARTS"

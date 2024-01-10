@@ -39,9 +39,8 @@ jobs:
   package-chart:
     runs-on: ubuntu-latest
     needs: find-charts
-    # strategy:
-    #   matrix: 
-    #     charts: ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
+    strategy:
+      matrix: ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
         # ["argo-test/app1","argo-test/app2"]
         
     steps:
@@ -67,18 +66,18 @@ jobs:
       shell: bash
       run: |
         echo ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
-        # echo ${{ matrix.charts }}
-        # current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" ${{ matrix.charts }}/Chart.yaml)
-        # echo $current_version
-        # new_version=$((current_version+1))
-        # message=="${{ matrix.charts }} current_version=$current_version new_version=$new_version"
-        # echo "$message"
-        # sed -i "s/^version: .*/version: 0.$new_version.0/" ${{ matrix.charts }}/Chart.yaml
-        # git config --global user.email "test@test.com"
-        # git config --global user.name "test"
-        # git add ${{ matrix.charts }}/Chart.yaml
-        # git commit -m "$message"
-        # git push
+        echo ${{ matrix.charts }}
+        current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" ${{ matrix.charts }}/Chart.yaml)
+        echo $current_version
+        new_version=$((current_version+1))
+        message=="${{ matrix.charts }} current_version=$current_version new_version=$new_version"
+        echo "$message"
+        sed -i "s/^version: .*/version: 0.$new_version.0/" ${{ matrix.charts }}/Chart.yaml
+        git config --global user.email "test@test.com"
+        git config --global user.name "test"
+        git add ${{ matrix.charts }}/Chart.yaml
+        git commit -m "$message"
+        git push
     
     # - name: Install Helm
     #   uses: azure/setup-helm@v3

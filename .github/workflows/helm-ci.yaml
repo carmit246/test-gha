@@ -18,7 +18,7 @@ jobs:
       id: find-charts
       run: |
         git fetch origin
-        git remote set-url origin ithub.com:carmit246/test-gha
+        git remote set-url origin github.com:carmit246/test-gha
         FOLDERS=("argo-test/app1" "argo-test/app2")
         for folder in $FOLDERS; do
           git diff --name-only HEAD HEAD~1 $folder --| sed 's/ci-cd\///'| sed 's/\/.*//'

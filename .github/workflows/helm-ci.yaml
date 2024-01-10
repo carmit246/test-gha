@@ -31,7 +31,6 @@ jobs:
           CHARTS_TO_BUILD+=("${{ env.CHARTS_DIR }}/$folder,")
           echo "CHARTS_TO_BUILD=$CHARTS_TO_BUILD"
         done
-        # CHARTS_TO_BUILD=$(echo $CHARTS_TO_BUILD | sed 's/,$//')
         echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"
         echo "CHARTS_TO_BUILD={\"charts\":[\"${CHARTS_TO_BUILD}\"]}" >> $GITHUB_OUTPUT
 

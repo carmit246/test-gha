@@ -27,13 +27,14 @@ jobs:
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
           echo "checking folder " $folder
-          res=$(git diff --name-only HEAD~1 $folder | sed 's/argo-test\///'| sed 's/\/.*//')
+          res=$(git diff --name-only HEAD~1 $folder)
           if [[ $res ]];then
             echo "changed: " $res
             CHARTS_TO_BUILD+=($folder)
           fi
         done
         echo Charts to build: \"{\"charts\": [\"${CHARTS_TO_BUILD}\"]}\"
+        echo ${{ toJSON(\"{\"charts\": [\"${CHARTS_TO_BUILD}\"]}\")}}
         echo "CHARTS_TO_BUILD=\"{\"charts\": [\"${CHARTS_TO_BUILD}\"]}\"" >> $GITHUB_OUTPUT
 
   package-chart:

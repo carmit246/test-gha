@@ -52,11 +52,12 @@ jobs:
       run: |
         echo ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
         echo ${{ matrix.charts }}
-        current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" ${{ matrix.charts }}/Chart.yaml)
+        current_version=$(cat ${{ matrix.charts }}/Chart.yaml| grep version: | awk '{print $2}')
         echo $current_version
-        new_version=$((current_version+1)) 
+        new_version=$(IFS=.;set -- $current_version;echo "$1.$((10#$2+1)).$3";)
         echo "VERSION=$new_version" >> $GITHUB_OUTPUT
-        message="${{ matrix.charts }} current_version=$current_version new_version=$new_version"
+        sed -i 's/version: $current_version/version: $new_version/'
+        message="Increment chart ${{ matrix.charts }} version: $current_version --> $new_version [skip ci]"
         echo "$message"
         sed -i "s/^version: .*/version: 0.$new_version.0/" ${{ matrix.charts }}/Chart.yaml
         git config --global user.email "test@test.com"

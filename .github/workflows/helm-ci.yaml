@@ -5,6 +5,9 @@ on:
     - 'argo-test/**'
     - '.github/**'
 
+env:
+  folders: ["argo-test/app1","argo-test/app2"]
+
 jobs:
   find-charts:
     runs-on: ubuntu-latest
@@ -37,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        value: [${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}]
+        value: ${{ env.folders }}
     steps:
     - name: increment version
       shell: bash

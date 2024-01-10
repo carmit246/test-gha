@@ -34,7 +34,7 @@ jobs:
           fi
         done
         echo "Charts to build: [\"$CHARTS_TO_BUILD\"]"
-        echo "CHARTS_TO_BUILD=[\"${CHARTS_TO_BUILD}\"]" >> $GITHUB_OUTPUT
+        echo "CHARTS_TO_BUILD=\"[\"${CHARTS_TO_BUILD}\"]\"" >> $GITHUB_OUTPUT
 
   package-chart:
     runs-on: ubuntu-latest

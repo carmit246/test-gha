@@ -34,13 +34,14 @@ jobs:
           fi
         done
         echo "Charts to build: $CHARTS_TO_BUILD"
-        echo "CHARTS_TO_BUILD=${CHARTS_TO_BUILD}" >> $GITHUB_OUTPUT
+        echo "CHARTS_TO_BUILD=[\"${CHARTS_TO_BUILD}\"]" >> $GITHUB_OUTPUT
+        "STRINGS=[\"One String\", \"Another String\"]"
 
   package-chart:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        value: ${{ env.HELM_FOLDERS }}
+        value: ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
     steps:
     - name: increment version
       shell: bash

@@ -31,7 +31,7 @@ jobs:
           CHARTS_TO_BUILD+=("${{ env.CHARTS_DIR }}/$folder,")
           echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"
         done
-        CHARTS_TO_BUILD=`echo $CHARTS_TO_BUILD | sed 's/,$//'`
+        CHARTS_TO_BUILD=$(echo $CHARTS_TO_BUILD | sed 's/,$//')
         echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"
         echo "CHARTS_TO_BUILD={\"charts\":[\"${CHARTS_TO_BUILD}\"]}" >> $GITHUB_OUTPUT
 
@@ -43,8 +43,8 @@ jobs:
         
     steps:
     - name: checkout
-      uses: actions/checkout@v4
-      with:
+      uses: actions/checkout@v4 
+      with: 
        fetch-depth: 2
         
     - name: increment version

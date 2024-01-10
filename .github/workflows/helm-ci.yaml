@@ -6,42 +6,13 @@ on:
     - '.github/**'
 
 env:
-  HELM_FOLDERS: '[\"argo-test/app1\",\"argo-test/app2\"]'
+  HELM_FOLDERS: "[\"argo-test\/app1\",\"argo-test\/app2\"]"
 
 jobs:
-  # find-charts:
-  #   runs-on: ubuntu-latest
-  #   outputs: 
-  #     CHARTS_TO_BUILD: ${{ steps.find-charts.outputs.CHARTS_TO_BUILD }} 
-  #   steps:
-  #   - name: checkout
-  #     uses: actions/checkout@v4
-  #     with:
-  #      fetch-depth: 2
-    
-    # - name: check for changes
-    #   id: find-charts
-    #   shell: bash
-    #   run: |
-    #     FOLDERS=("argo-test/app1 argo-test/app2")
-    #     CHARTS_TO_BUILD=()
-    #     for folder in $FOLDERS; do
-    #       echo "checking folder " $folder
-    #       res=$(git diff --name-only HEAD~1 $folder | sed 's/argo-test\///'| sed 's/\/.*//')
-    #       if [[ $res ]];then
-    #         echo "changed: " $res
-    #         CHARTS_TO_BUILD+=($folder)
-    #       fi
-    #     done
-    #     echo "Charts to build: [\"$CHARTS_TO_BUILD\"]"
-    #     echo "CHARTS_TO_BUILD=[\"${CHARTS_TO_BUILD}\"]" >> $GITHUB_OUTPUT
-
-  package-chart:
+  find-charts:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        value: ["argo-test/app1","argo-test/app2"]
-        #${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
+    outputs: 
+      CHARTS_TO_BUILD: ${{ steps.find-charts.outputs.CHARTS_TO_BUILD }} 
     steps:
     - name: checkout
       uses: actions/checkout@v4
@@ -52,16 +23,46 @@ jobs:
       id: find-charts
       shell: bash
       run: |
-        echo "checking folder " ${{ matrix.value }}
-          res=$(git diff --name-only HEAD~1 ${{ matrix.value }})
+        FOLDERS=("argo-test/app1 argo-test/app2")
+        CHARTS_TO_BUILD=()
+        for folder in $FOLDERS; do
+          echo "checking folder " $folder
+          res=$(git diff --name-only HEAD~1 $folder | sed 's/argo-test\///'| sed 's/\/.*//')
           if [[ $res ]];then
             echo "changed: " $res
-            echo "CHANGED=true" >> $GITHUB_OUTPUT
-          else echo "CHANGED=false" >> $GITHUB_OUTPUT
+            CHARTS_TO_BUILD+=($folder)
           fi
+        done
+        echo "Charts to build: [\"$CHARTS_TO_BUILD\"]"
+        echo "CHARTS_TO_BUILD=[\"${CHARTS_TO_BUILD}\"]" >> $GITHUB_OUTPUT
+
+  package-chart:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        value: ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
+        # ["argo-test/app1","argo-test/app2"]
+        
+    steps:
+    - name: checkout
+      uses: actions/checkout@v4
+      with:
+       fetch-depth: 2
+    
+    # - name: check for changes
+    #   id: find-charts
+    #   shell: bash
+    #   run: |
+    #     echo "checking folder " ${{ matrix.value }}
+    #       res=$(git diff --name-only HEAD~1 ${{ matrix.value }})
+    #       if [[ $res ]];then
+    #         echo "changed: " $res
+    #         echo "CHANGED=true" >> $GITHUB_OUTPUT
+    #       else echo "CHANGED=false" >> $GITHUB_OUTPUT
+    #       fi
         
     - name: increment version
-      if: ${{ steps.find-charts.outputs.CHANGED == 'true' }}
+      # if: ${{ steps.find-charts.outputs.CHANGED == 'true' }}
       shell: bash
       run: |
         echo ${{ matrix.value }}

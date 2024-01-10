@@ -22,7 +22,7 @@ jobs:
         FOLDERS=("argo-test/app1" "argo-test/app2")
         for folder in $FOLDERS; do
           git diff --name-only HEAD HEAD~1 -- $folder | sed 's/ci-cd\///'| sed 's/\/.*//'
-          res=$(git diff --quiet--name-only argo-test| sed 's/argo-test\///'| sed 's/\/.*//')
+          res=$(git diff --name-only argo-test| sed 's/argo-test\///'| sed 's/\/.*//')
           if [[ $res ]];then
             echo "changed: " $res
             CHARTS_TO_BUILD+=($folder)

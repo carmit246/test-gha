@@ -61,7 +61,7 @@ jobs:
           fi
         
     - name: increment version
-      if: ${{ needs.find-charts.outputs.CHANGED == 'true' }}
+      if: ${{ steps.find-charts.outputs.CHANGED == 'true' }}
       shell: bash
       run: |
         echo ${{ matrix.value }}

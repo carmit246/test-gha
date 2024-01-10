@@ -27,9 +27,9 @@ jobs:
         FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| sed 's/\/.*//'| uniq)
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
-          echo "checking folder " ${{ env.CHARTS_DIR }}/$folder
-            CHARTS_TO_BUILD+=(${{ env.CHARTS_DIR }}/$folder)
+          CHARTS_TO_BUILD+=(${{ env.CHARTS_DIR }}/$folder,)
         done
+        CHARTS_TO_BUILD=`echo $CHARTS_TO_BUILD | sed 's/.$//'`
         echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"
         echo "CHARTS_TO_BUILD={\"charts\":[\"${CHARTS_TO_BUILD}\"]}" >> $GITHUB_OUTPUT
 
@@ -47,7 +47,6 @@ jobs:
         
     - name: increment version
       id: chart-version
-      # if: ${{ steps.find-charts.outputs.CHANGED == 'true' }}
       shell: bash
       run: |
         echo ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}

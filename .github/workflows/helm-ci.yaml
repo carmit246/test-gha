@@ -27,7 +27,8 @@ jobs:
         FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| sed 's/\/.*//'| uniq)
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
-          CHARTS_TO_BUILD+=(${{ env.CHARTS_DIR }}/$folder,)
+          echo "${{ env.CHARTS_DIR }}/$folder,"
+          CHARTS_TO_BUILD+=("${{ env.CHARTS_DIR }}/$folder,"")
         done
         CHARTS_TO_BUILD=`echo $CHARTS_TO_BUILD | sed 's/.$//'`
         echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"

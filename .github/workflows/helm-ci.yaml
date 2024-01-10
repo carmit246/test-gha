@@ -30,8 +30,8 @@ jobs:
             CHARTS_TO_BUILD+=($folder)
           fi
         done
-        echo "Charts to build: $CHARTS"
-        echo "CHARTS_TO_BUILD=${CHARTS}" >> $GITHUB_OUTPUT
+        echo "Charts to build: $CHARTS_TO_BUILD"
+        echo "CHARTS_TO_BUILD=${CHARTS_TO_BUILD}" >> $GITHUB_OUTPUT
         git diff --name-only HEAD~1 argo-test
 
   package-chart:

@@ -28,7 +28,7 @@ jobs:
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
           echo "${{ env.CHARTS_DIR }}/$folder"
-          CHARTS_TO_BUILD+=("${{ env.CHARTS_DIR }}/$folder")
+          CHARTS_TO_BUILD+=("\"${{ env.CHARTS_DIR }}/$folder\"")
           CHARTS_TO_BUILD+=(",")
         done
         echo ${CHARTS_TO_BUILD[@]}| tr '\n' ','| sed 's/,$//'

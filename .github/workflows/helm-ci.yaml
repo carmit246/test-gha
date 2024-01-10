@@ -9,10 +9,39 @@ env:
   HELM_FOLDERS: '[\"argo-test/app1\",\"argo-test/app2\"]'
 
 jobs:
-  find-charts:
+  # find-charts:
+  #   runs-on: ubuntu-latest
+  #   outputs: 
+  #     CHARTS_TO_BUILD: ${{ steps.find-charts.outputs.CHARTS_TO_BUILD }} 
+  #   steps:
+  #   - name: checkout
+  #     uses: actions/checkout@v4
+  #     with:
+  #      fetch-depth: 2
+    
+    # - name: check for changes
+    #   id: find-charts
+    #   shell: bash
+    #   run: |
+    #     FOLDERS=("argo-test/app1 argo-test/app2")
+    #     CHARTS_TO_BUILD=()
+    #     for folder in $FOLDERS; do
+    #       echo "checking folder " $folder
+    #       res=$(git diff --name-only HEAD~1 $folder | sed 's/argo-test\///'| sed 's/\/.*//')
+    #       if [[ $res ]];then
+    #         echo "changed: " $res
+    #         CHARTS_TO_BUILD+=($folder)
+    #       fi
+    #     done
+    #     echo "Charts to build: [\"$CHARTS_TO_BUILD\"]"
+    #     echo "CHARTS_TO_BUILD=[\"${CHARTS_TO_BUILD}\"]" >> $GITHUB_OUTPUT
+
+  package-chart:
     runs-on: ubuntu-latest
-    outputs: 
-      CHARTS_TO_BUILD: ${{ steps.find-charts.outputs.CHARTS_TO_BUILD }} 
+    strategy:
+      matrix:
+        value: ["argo-test/app1","argo-test/app2"]
+        #${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
     steps:
     - name: checkout
       uses: actions/checkout@v4
@@ -23,39 +52,28 @@ jobs:
       id: find-charts
       shell: bash
       run: |
-        FOLDERS=("argo-test/app1 argo-test/app2")
-        CHARTS_TO_BUILD=()
-        for folder in $FOLDERS; do
-          echo "checking folder " $folder
-          res=$(git diff --name-only HEAD~1 $folder | sed 's/argo-test\///'| sed 's/\/.*//')
+        echo "checking folder " ${{ matrix.value }}
+          res=$(git diff --name-only HEAD~1 ${{ matrix.value }})
           if [[ $res ]];then
             echo "changed: " $res
-            CHARTS_TO_BUILD+=($folder)
+            echo "CHANGED=true" >>$GITHUB_OUTPUT
+          else echo "CHANGED=false" >>$GITHUB_OUTPUT
           fi
-        done
-        echo "Charts to build: [\"$CHARTS_TO_BUILD\"]"
-        echo "CHARTS_TO_BUILD=[\"${CHARTS_TO_BUILD}\"]" >> $GITHUB_OUTPUT
-
-  package-chart:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        value: ["argo-test/app1","argo-test/app2"]
-        #${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
-    steps:
+        
     - name: increment version
+      if: ${{ needs.find-charts.outputs.image-tag == "true" }}
       shell: bash
       run: |
-        echo {{ $matrix.value }}
-        current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" {{ $matrix.value }}/Chart.yaml)
+        echo ${{ matrix.value }}
+        current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" ${{ matrix.value }}/Chart.yaml)
         echo $current_version
         new_version=$((current_version+1))
-        message=="{{ $matrix.value }} current_version=$current_version new_version=$new_version"
+        message=="${{ matrix.value }} current_version=$current_version new_version=$new_version"
         echo "$message"
-        sed -i "s/^version: .*/version: 0.$new_version.0/" {{ $matrix.value }}/Chart.yaml
+        sed -i "s/^version: .*/version: 0.$new_version.0/" ${{ matrix.value }}/Chart.yaml
         git config --global user.email "test@test.com"
         git config --global user.name "test"
-        git add {{ $matrix.value }}/Chart.yaml
+        git add ${{ matrix.value }}/Chart.yaml
         git commit -m "$message"
         git push
     

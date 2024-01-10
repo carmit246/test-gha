@@ -20,7 +20,7 @@ jobs:
       run: |
         git fetch origin
         git remote set-url origin github.com:carmit246/test-gha
-        FOLDERS=("argo-test/app1" "argo-test/app2")
+        FOLDERS=("argo-test/app1 argo-test/app2")
         for folder in $FOLDERS; do
           echo $folder
           git diff --name-only HEAD $folder

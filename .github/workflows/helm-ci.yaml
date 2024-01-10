@@ -20,19 +20,16 @@ jobs:
       id: find-charts
       shell: bash
       run: |
-        # git fetch origin
-        # git remote set-url origin github.com:carmit246/test-gha
         FOLDERS=("argo-test/app1 argo-test/app2")
         for folder in $FOLDERS; do
-          echo $folder
-          git diff --name-only HEAD~1
+          echo "checking folder " $folder
           res=$(git diff --name-only HEAD~1 $folder | sed 's/argo-test\///'| sed 's/\/.*//')
           if [[ $res ]];then
             echo "changed: " $res
             CHARTS_TO_BUILD+=($folder)
           fi
         done
-        echo $CHARTS
+        echo "Charts to build: $CHARTS"
         echo "CHARTS_TO_BUILD=${CHARTS}" >> $GITHUB_OUTPUT
         git diff --name-only HEAD~1 argo-test
 

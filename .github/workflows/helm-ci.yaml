@@ -39,7 +39,8 @@ jobs:
   package-chart:
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.find-charts.outputs.CHARTS_TO_BUILD) }}
+      matrix: 
+        charts: ${{ fromJson(needs.find-charts.outputs.CHARTS_TO_BUILD) }}
         # ["argo-test/app1","argo-test/app2"]
         
     steps:

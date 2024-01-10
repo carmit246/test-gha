@@ -21,12 +21,13 @@ jobs:
       shell: bash
       run: |
         FOLDERS=("argo-test/app1 argo-test/app2")
+        CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
           echo "checking folder " $folder
           res=$(git diff --name-only HEAD~1 $folder | sed 's/argo-test\///'| sed 's/\/.*//')
           if [[ $res ]];then
             echo "changed: " $res
-            CHARTS_TO_BUILD+=("$folder")
+            CHARTS_TO_BUILD+=($folder)
           fi
         done
         echo "Charts to build: $CHARTS"

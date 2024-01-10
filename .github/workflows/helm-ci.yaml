@@ -24,14 +24,14 @@ jobs:
       shell: bash
       run: |
         git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| sed 's/\/.*//'| tr '\n' ','| uniq | sed 's/,$//'
-        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| sed 's#\n#,#g'| | tr '\n' ','| uniq| sed 's/,$//')
+        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/argo-test\///'| tr '\n' ','| uniq| sed 's/,$//')
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
           echo "${{ env.CHARTS_DIR }}/$folder,"
           CHARTS_TO_BUILD+=("${{ env.CHARTS_DIR }}/$folder,")
           echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"
         done
-        CHARTS_TO_BUILD=`echo $CHARTS_TO_BUILD | sed 's/,$//'`
+        # CHARTS_TO_BUILD=`echo $CHARTS_TO_BUILD | sed 's/,$//'`
         echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"
         echo "CHARTS_TO_BUILD={\"charts\":[\"${CHARTS_TO_BUILD}\"]}" >> $GITHUB_OUTPUT
 

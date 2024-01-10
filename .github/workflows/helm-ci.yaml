@@ -28,7 +28,7 @@ jobs:
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
           echo "${{ env.CHARTS_DIR }}/$folder,"
-          CHARTS_TO_BUILD+=("${{ env.CHARTS_DIR }}/$folder,"")
+          CHARTS_TO_BUILD+=("${{ env.CHARTS_DIR }}/$folder,")
         done
         CHARTS_TO_BUILD=`echo $CHARTS_TO_BUILD | sed 's/.$//'`
         echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"
@@ -56,7 +56,7 @@ jobs:
         echo $current_version
         new_version=$(IFS=.;set -- $current_version;echo "$1.$((10#$2+1)).$3";)
         echo "VERSION=$new_version" >> $GITHUB_OUTPUT
-        sed -i 's/version: $current_version/version: $new_version/' ${{ matrix.charts }}/Chart.yaml
+        sed -i 's/version: $current_version/version: $new_version/g' ${{ matrix.charts }}/Chart.yaml
         message="Increment chart ${{ matrix.charts }} version: $current_version --> $new_version [skip ci]"
         echo "$message"
         git config --global user.email "test@test.com"

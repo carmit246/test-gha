@@ -33,9 +33,8 @@ jobs:
             CHARTS_TO_BUILD+=($folder)
           fi
         done
-        echo Charts to build: \"{\"charts\": [\"${CHARTS_TO_BUILD}\"]}\"
-        echo ${{ toJSON(\"{\"charts\": [\"${CHARTS_TO_BUILD}\"]}\")}}
-        echo "CHARTS_TO_BUILD=\"{\"charts\": [\"${CHARTS_TO_BUILD}\"]}\"" >> $GITHUB_OUTPUT
+        echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"
+        echo "CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"" >> $GITHUB_OUTPUT
 
   package-chart:
     runs-on: ubuntu-latest

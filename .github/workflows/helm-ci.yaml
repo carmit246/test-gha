@@ -22,8 +22,8 @@ jobs:
         FOLDERS=("argo-test/app1" "argo-test/app2")
         for folder in $FOLDERS; do
           echo $folder
-          git diff --name-only HEAD -- $folder
-          res=$(git diff --name-only HEAD -- $folder | sed 's/argo-test\///'| sed 's/\/.*//')
+          git diff --name-only HEAD $folder
+          res=$(git diff --name-only HEAD $folder | sed 's/argo-test\///'| sed 's/\/.*//')
           if [[ $res ]];then
             echo "changed: " $res
             CHARTS_TO_BUILD+=($folder)
@@ -31,7 +31,7 @@ jobs:
         done
         echo $CHARTS
         echo "CHARTS_TO_BUILD=${CHARTS}" >> $GITHUB_OUTPUT
-        git diff --name-only HEAD -- argo-test'
+        git diff --name-only HEAD argo-test
 
   package-chart:
     runs-on: ubuntu-latest

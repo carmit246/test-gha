@@ -16,6 +16,7 @@ jobs:
     
     - name: check for changes
       id: find-charts
+      shell: bash
       run: |
         git fetch origin
         git remote set-url origin github.com:carmit246/test-gha

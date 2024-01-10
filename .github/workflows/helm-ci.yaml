@@ -28,11 +28,7 @@ jobs:
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
           echo "checking folder " ${{ env.CHARTS_DIR }}/$folder
-          # res=$(git diff --name-only HEAD~1 $folder)
-          # if [[ $res ]];then
-          #   echo "changed: " $res
             CHARTS_TO_BUILD+=(${{ env.CHARTS_DIR }}/$folder)
-          # fi
         done
         echo CHARTS_TO_BUILD=\"{\"charts\":[\"${CHARTS_TO_BUILD}\"]}\"
         echo "CHARTS_TO_BUILD={\"charts\":[\"${CHARTS_TO_BUILD}\"]}" >> $GITHUB_OUTPUT
@@ -42,27 +38,15 @@ jobs:
     needs: find-charts
     strategy:
       matrix: ${{ fromJson(needs.find-charts.outputs.CHARTS_TO_BUILD) }}
-        # ["argo-test/app1","argo-test/app2"]
         
     steps:
     - name: checkout
       uses: actions/checkout@v4
       with:
        fetch-depth: 2
-    
-    # - name: check for changes
-    #   id: find-charts
-    #   shell: bash
-    #   run: |
-    #     echo "checking folder " ${{ matrix.value }}
-    #       res=$(git diff --name-only HEAD~1 ${{ matrix.value }})
-    #       if [[ $res ]];then
-    #         echo "changed: " $res
-    #         echo "CHANGED=true" >> $GITHUB_OUTPUT
-    #       else echo "CHANGED=false" >> $GITHUB_OUTPUT
-    #       fi
         
     - name: increment version
+      id: chart-version
       # if: ${{ steps.find-charts.outputs.CHANGED == 'true' }}
       shell: bash
       run: |
@@ -70,7 +54,8 @@ jobs:
         echo ${{ matrix.charts }}
         current_version=$(grep -Po "version: \d*.\K(\d)*(?=\d*)" ${{ matrix.charts }}/Chart.yaml)
         echo $current_version
-        new_version=$((current_version+1))
+        new_version=$((current_version+1)) 
+        echo "VERSION=$new_version" >> $GITHUB_OUTPUT
         message="${{ matrix.charts }} current_version=$current_version new_version=$new_version"
         echo "$message"
         sed -i "s/^version: .*/version: 0.$new_version.0/" ${{ matrix.charts }}/Chart.yaml
@@ -80,13 +65,15 @@ jobs:
         git commit -m "$message"
         git push
     
-    # - name: Install Helm
-    #   uses: azure/setup-helm@v3
-    #   with:
-    #     version: "3.9.0"
+    - name: Install Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: "3.9.0"
     
-    # - name: package release
-    #   shell: bash
-    #   run: |
-    #     helm package argo-test/app1
-    #     ls -l
+    - name: package release
+      shell: bash
+      run: |
+        helm package ${{ matrix.charts }}
+        chart=$(echo ${{ matrix.charts }} | sed 's/argo-test\///'| sed 's/\/.*//')
+        ls -l| grep $chart
+        echo ":white_check_mark: New helm chart release published: ${{ chart }}:steps.chart-version.outputs.VERSION " >> $GITHUB_STEP_SUMMARY

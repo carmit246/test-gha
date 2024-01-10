@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        value: ${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}
+        value: [${{ needs.find-charts.outputs.CHARTS_TO_BUILD }}]
     steps:
     - name: increment version
       shell: bash

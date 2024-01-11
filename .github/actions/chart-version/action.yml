@@ -47,6 +47,7 @@ runs:
       echo "$message"
       git commit -m "$message"
       git push --set-upstream origin ${{ steps.chart-version.outputs.BRANCH }}
+      gh pr create --base main --head ${{ steps.chart-version.outputs.BRANCH }} --title "$message" --body "$message"
 
   - name: Merge PR
     shell: bash

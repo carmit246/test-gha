@@ -52,6 +52,7 @@ jobs:
       with:
         folder: ${{ env.CHARTS_DIR }}
         chart: ${{ matrix.charts }}
+        gh_token: ${{ secrets.PAT }}
 
     # - name: increment version
     #   id: chart-version

@@ -39,6 +39,8 @@ runs:
 
   - name: Commit and open PR
     shell: bash
+    env:
+      GH_TOKEN: ${{ inputs.gh_token }}
     run: |
       git config --global user.email "test@test.com"
       git config --global user.name "test"
@@ -52,7 +54,7 @@ runs:
   - name: Merge PR
     shell: bash
     env:
-        GH_TOKEN: ${{ inputs.gh_token }}
+      GH_TOKEN: ${{ inputs.gh_token }}
     run: |
       WAIT_TIME=0
       until [ $WAIT_TIME -eq 10 ] || gh pr merge --admin --delete-branch --squash ${{ inputs.branch }}; do

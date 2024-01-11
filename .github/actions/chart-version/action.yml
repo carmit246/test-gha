@@ -21,16 +21,17 @@ runs:
     run: |
       echo ${{ inputs.folder }}
       echo ${{ inputs.chart }}
-      branch=$(echo ${{ inputs.chart }} | sed 's/${{ inputs.folder }}\///')-$new_version
       current_version=$(cat ${{ inputs.chart }}/Chart.yaml| grep version: | awk '{print $2}')
       echo $current_version
       new_version=$(IFS=.;set -- $current_version;echo "$1.$((10#$2+1)).$3";)
+      branch=$(echo ${{ inputs.chart }} | sed 's/${{ inputs.folder }}\///')-$new_version
       git checkout -b $branch
       echo "BRANCH=$branch" >> $GITHUB_OUTPUT
+      echo "NEW_VERSION=$new_version" >> $GITHUB_OUTPUT
+      echo "OLD_VERSION=$current_version" >> $GITHUB_OUTPUT
       echo sed -i "s/version: ${current_version}/version: ${new_version}/g" ${{ inputs.chart }}/Chart.yaml
       sed -i "s/version: ${current_version}/version: ${new_version}/g" ${{ inputs.chart }}/Chart.yaml
-      message="Increment chart ${{ inputs.chart }} version: $current_version --> $new_version [skip ci]"
-      echo "$message"
+      
       cat ${{ inputs.chart }}/Chart.yaml| grep version: | awk '{print $2}'
 
   - name: Commit and open PR
@@ -39,6 +40,8 @@ runs:
       git config --global user.email "test@test.com"
       git config --global user.name "test"
       git add ${{ inputs.chart }}/Chart.yaml
+      message="Increment chart ${{ inputs.chart }} version: ${{ steps.chart-version.outputs.OLD_VERSION }} --> ${{ steps.chart-version.outputs.NEW_VERSION }} [skip ci]"
+      echo "$message"
       git commit -m "$message"
       git push --set-upstream origin ${{ steps.chart-version.outputs.BRANCH }}
 

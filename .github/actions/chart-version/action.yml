@@ -1,0 +1,54 @@
+nsme:
+description:
+inputs:
+  folder:
+    required: true
+    default: argo-test
+    description: Helm charts root folder path
+  chart:
+    required: false
+    description: Helm chart path
+  chart_name:
+    required: false
+    description: Helm chart name
+
+runs:
+  using: "composite"
+  steps:
+  - name: increment version
+    id: chart-version
+    shell: bash
+    run: |
+      echo ${{ inputs.folder }}
+      echo ${{ inputs.chart }}
+      branch=$(echo ${{ inputs.chart }} | sed 's/${{ inputs.folder }}//')-$new_version
+      current_version=$(cat ${{ inputs.chart }}/Chart.yaml| grep version: | awk '{print $2}')
+      echo $current_version
+      new_version=$(IFS=.;set -- $current_version;echo "$1.$((10#$2+1)).$3";)
+      git checkout -b $branch
+      echo "BRANCH=$branch" >> $GITHUB_OUTPUT
+      echo sed -i "s/version: ${current_version}/version: ${new_version}/g" ${{ inputs.chart }}/Chart.yaml
+      sed -i "s/version: ${current_version}/version: ${new_version}/g" ${{ inputs.chart }}/Chart.yaml
+      message="Increment chart ${{ inputs.chart }} version: $current_version --> $new_version [skip ci]"
+      echo "$message"
+      cat ${{ inputs.chart }}/Chart.yaml| grep version: | awk '{print $2}'
+
+  - name: Commit and open PR
+    shell: bash
+    run: |
+      git config --global user.email "test@test.com"
+      git config --global user.name "test"
+      git add ${{ inputs.chart }}/Chart.yaml
+      git commit -m "$message"
+      git push --set-upstream origin ${{ step.chart-version.outputs.BRANCH }}
+
+  - name: Merge PR
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+      run: |
+        WAIT_TIME=0
+        until [ $WAIT_TIME -eq 10 ] || gh pr merge --admin --delete-branch --squash ${{ inputs.branch }}; do
+          WAIT_TIME=$(( WAIT_TIME + 1 ))
+          sleep $WAIT_TIME
+        done

@@ -84,7 +84,7 @@ jobs:
       shell: bash
       run: |
         helm package ${{ matrix.charts }}
-        chart=$(echo ${{ matrix.charts }} | sed 's/argo-test\///'| sed 's/\/.*//')
+        chart=$(echo ${{ matrix.charts }} | sed "s/${{ env.CHARTS_DIR }}\///"| sed 's/\/.*//')
         echo $chart
         ls | grep ${chart}| sed 's/${chart}-//'| sed 's/\.tgz//'
         chart_version=$(ls | grep ${chart}| sed 's/-/:/'| sed 's/\.tgz//')

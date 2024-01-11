@@ -21,7 +21,7 @@ runs:
     run: |
       echo ${{ inputs.folder }}
       echo ${{ inputs.chart }}
-      branch=$(echo ${{ inputs.chart }} | sed 's/${{ inputs.folder }}//')-$new_version
+      branch=$(echo ${{ inputs.chart }} | sed 's/${{ inputs.folder }}\///')-$new_version
       current_version=$(cat ${{ inputs.chart }}/Chart.yaml| grep version: | awk '{print $2}')
       echo $current_version
       new_version=$(IFS=.;set -- $current_version;echo "$1.$((10#$2+1)).$3";)

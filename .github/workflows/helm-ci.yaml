@@ -23,7 +23,7 @@ jobs:
       id: find-charts
       shell: bash
       run: |
-        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | awk -v var="${{ env.CHARTS_DIR }}" '{gsub(var,"")}1'| sed 's/\/.*//'| uniq
+        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | awk -v var="${{ env.CHARTS_DIR }}/" '{gsub(var,"")}1'| sed 's/\/.*//'| uniq
         FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | awk -v var="${{ env.CHARTS_DIR }}" '{gsub(var,"")}1'| sed 's/\/.*//' | uniq)
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do

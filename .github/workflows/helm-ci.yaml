@@ -31,16 +31,23 @@ jobs:
           CHARTS_TO_BUILD+=("\"${{ env.CHARTS_DIR }}/$folder\"")
           CHARTS_TO_BUILD+=(",")
         done
-        charts=$(echo ${CHARTS_TO_BUILD[@]}| tr '\n' ','| sed 's/,,$//')
-        echo CHARTS_TO_BUILD=\"{\"charts\":[${charts}]}\"
-        echo "CHARTS_TO_BUILD={\"charts\":[$charts]}" >> $GITHUB_OUTPUT
+        if [[ ${#CHARTS_TO_BUILD[@]} > 0 ]];then
+          charts=$(echo ${CHARTS_TO_BUILD[@]}| tr '\n' ','| sed 's/,,$//')
+          echo CHARTS_TO_BUILD=\"{\"charts\":[${charts}]}\"
+          echo "CHARTS_TO_BUILD={\"charts\":[$charts]}" >> $GITHUB_OUTPUT
+          echo "BUILD_CHARTS=true" >> $GITHUB_OUTPUT
+        else
+          echo "BUILD_CHARTS=false" >> $GITHUB_OUTPUT
+        fi
 
   package-chart:
+  
+fi
     runs-on: ubuntu-latest
     needs: find-charts
+    if: ${{ needs.find-charts.outputs.BUILD_CHARTS == 'true' }}
     strategy:
       matrix: ${{ fromJson(needs.find-charts.outputs.CHARTS_TO_BUILD) }}
-        
     steps:
     - name: checkout
       uses: actions/checkout@v4 

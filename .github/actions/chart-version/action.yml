@@ -40,15 +40,13 @@ runs:
       git config --global user.name "test"
       git add ${{ inputs.chart }}/Chart.yaml
       git commit -m "$message"
-      git push --set-upstream origin ${{ step.chart-version.outputs.BRANCH }}
+      git push --set-upstream origin ${{ steps.chart-version.outputs.BRANCH }}
 
   - name: Merge PR
-      shell: bash
-      env:
-        GH_TOKEN: ${{ inputs.token }}
-      run: |
-        WAIT_TIME=0
-        until [ $WAIT_TIME -eq 10 ] || gh pr merge --admin --delete-branch --squash ${{ inputs.branch }}; do
-          WAIT_TIME=$(( WAIT_TIME + 1 ))
-          sleep $WAIT_TIME
-        done
+    shell: bash
+    run: |
+      WAIT_TIME=0
+      until [ $WAIT_TIME -eq 10 ] || gh pr merge --admin --delete-branch --squash ${{ inputs.branch }}; do
+        WAIT_TIME=$(( WAIT_TIME + 1 ))
+        sleep $WAIT_TIME
+      done

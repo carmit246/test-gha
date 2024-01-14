@@ -93,7 +93,7 @@ jobs:
       shell: bash
       run: |
         helm package ${{ matrix.charts }}
-        chart=$(echo ${{ matrix.charts }} | | xargs -L1 dirname | sed 's/.*\///')
+        chart=$(echo ${{ matrix.charts }} | xargs -L1 dirname | sed 's/.*\///')
         echo $chart
         ls | grep ${chart}| sed 's/${chart}-//'| sed 's/\.tgz//'
         chart_version=$(ls | grep ${chart}| sed 's/-/:/'| sed 's/\.tgz//')

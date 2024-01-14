@@ -24,9 +24,9 @@ jobs:
       shell: bash
       run: |
         git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }}
-        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }}) 
-        FOLDERS="${FOLDERS/${{ env.CHARTS_DIR }}/}"
-        FOLDERS=$(echo $FOLDERS| sed 's/\/.*//' | uniq)
+        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }})
+        FOLDERS=$(echo"${FOLDERS/${{ env.CHARTS_DIR }}/}"| sed 's/\/.*//' | uniq)
+        echo $FOLDERS
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
           echo "${{ env.CHARTS_DIR }}/$folder"

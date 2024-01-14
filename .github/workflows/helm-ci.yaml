@@ -24,23 +24,22 @@ jobs:
       id: find-charts
       shell: bash
       run: |
-        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | xargs -L1 dirname | sed 's/.*\///' | uniq
-        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | xargs -L1 dirname | sed 's/.*\///' | uniq)
-        echo $FOLDERS
-        CHARTS_TO_BUILD=()
-        for folder in $FOLDERS; do
-          echo "${{ env.CHARTS_DIR }}/$folder"
-          CHARTS_TO_BUILD+=("\"${{ env.CHARTS_DIR }}/$folder\"")
-          CHARTS_TO_BUILD+=(",")
-        done
-        echo ${#CHARTS_TO_BUILD[@]}
-        if [[ ${#CHARTS_TO_BUILD[@]} -gt 0 ]];then
-          charts=$(echo ${CHARTS_TO_BUILD[@]}| tr '\n' ','| sed 's/,,$//')
-          echo CHARTS_TO_BUILD=\"{\"charts\":[${charts}]}\"
-          echo "CHARTS_TO_BUILD={\"charts\":[$charts]}" >> $GITHUB_OUTPUT
-          echo "BUILD_CHARTS=true" >> $GITHUB_OUTPUT
-        else
+        if git diff --quiet --name-only HEAD~1 ${{ env.CHARTS_DIR }} ;then
           echo "BUILD_CHARTS=false" >> $GITHUB_OUTPUT
+        else
+          FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | xargs -L1 dirname | sed 's/.*\///' | uniq)
+          echo $FOLDERS
+          CHARTS_TO_BUILD=()
+          for folder in $FOLDERS; do
+            echo "${{ env.CHARTS_DIR }}/$folder"
+            CHARTS_TO_BUILD+=("\"${{ env.CHARTS_DIR }}/$folder\"")
+            CHARTS_TO_BUILD+=(",")
+          done
+          echo ${#CHARTS_TO_BUILD[@]}
+            charts=$(echo ${CHARTS_TO_BUILD[@]}| tr '\n' ','| sed 's/,,$//')
+            echo CHARTS_TO_BUILD=\"{\"charts\":[${charts}]}\"
+            echo "CHARTS_TO_BUILD={\"charts\":[$charts]}" >> $GITHUB_OUTPUT
+            echo "BUILD_CHARTS=true" >> $GITHUB_OUTPUT
         fi
 
   package-chart:

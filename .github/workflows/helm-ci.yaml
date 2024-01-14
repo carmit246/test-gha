@@ -93,9 +93,9 @@ jobs:
       shell: bash
       run: |
         helm package ${{ matrix.charts }}
-        chart=$(echo ${{ matrix.charts }} | xargs -L1 dirname | sed 's/.*\///')
+        chart=$(echo ${{ matrix.charts }} | xargs -L1 dirname')
         echo $chart
-        ls | grep ${chart}| sed 's/${chart}-//'| sed 's/\.tgz//'
-        chart_version=$(ls | grep ${chart}| sed 's/-/:/'| sed 's/\.tgz//')
+        ls | grep ${chart}| sed 's/\.tgz//'
+        chart_version=$(ls | grep ${chart}| sed 's/-/:/' | sed 's/\.tgz//')
         echo chart_version: $chart_version
         echo ":white_check_mark: New helm chart release published: ${chart_version}" >> $GITHUB_STEP_SUMMARY

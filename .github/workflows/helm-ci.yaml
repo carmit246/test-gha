@@ -23,9 +23,8 @@ jobs:
       id: find-charts
       shell: bash
       run: |
-        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }}
-        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }})
-        FOLDERS=$(echo "${FOLDERS/${{ env.CHARTS_DIR }}/}"| sed 's/\/.*//' | uniq)
+        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | xargs -L1 dirname | sed 's/.*\///' | uniq
+        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | xargs -L1 dirname | sed 's/.*\///' | uniq)
         echo $FOLDERS
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
@@ -93,8 +92,7 @@ jobs:
       shell: bash
       run: |
         helm package ${{ matrix.charts }}
-        path=$(echo ${{ env.CHARTS_DIR }} | sed 's/\//\:/')
-        chart=$(echo ${{ matrix.charts }} | | sed 's/\//\:/' | | sed 's/${path}//'| sed 's/\/.*//')
+        chart=$(echo ${{ matrix.charts }} | | xargs -L1 dirname | sed 's/.*\///')
         echo $chart
         ls | grep ${chart}| sed 's/${chart}-//'| sed 's/\.tgz//'
         chart_version=$(ls | grep ${chart}| sed 's/-/:/'| sed 's/\.tgz//')

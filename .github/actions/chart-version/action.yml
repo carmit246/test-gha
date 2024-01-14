@@ -27,7 +27,7 @@ runs:
       current_version=$(cat ${{ inputs.chart }}/Chart.yaml| grep version: | awk '{print $2}')
       echo $current_version
       new_version=$(IFS=.;set -- $current_version;echo "$1.$((10#$2+1)).$3";)
-      branch=$(echo ${{ inputs.chart }} | xargs -L1 dirname | sed 's/.*\///' | uniq' )-$new_version
+      branch=$(echo ${{ inputs.chart }} | xargs -L1 dirname | sed 's/.*\///' )-$new_version
       git checkout -b $branch
       echo "BRANCH=$branch" >> $GITHUB_OUTPUT
       echo "NEW_VERSION=$new_version" >> $GITHUB_OUTPUT

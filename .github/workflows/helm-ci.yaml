@@ -24,8 +24,8 @@ jobs:
       shell: bash
       run: |
         path=$(echo ${{ env.CHARTS_DIR }} | sed 's/\//\:/')
-        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/\//\:/' | sed 's/${path}//'| sed 's/\/.*//'| uniq
-        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | awk -v var="${path}" '{gsub(var,"")}1'| sed 's/\/.*//' | uniq)
+        git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | sed 's/\//\:/' | sed 's/${path}//'| sed 's/\:.*//'| uniq
+        FOLDERS=$(git diff --name-only HEAD~1 ${{ env.CHARTS_DIR }} | awk -v var="${path}" '{gsub(var,"")}1'| sed 's/\:.*//' | uniq)
         CHARTS_TO_BUILD=()
         for folder in $FOLDERS; do
           echo "${{ env.CHARTS_DIR }}/$folder"

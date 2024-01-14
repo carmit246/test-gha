@@ -55,6 +55,7 @@ jobs:
        fetch-depth: 2
 
     - name: increment version
+      id: chart-version
       uses: carmit246/test-gha/.github/actions/chart-version@main
       with:
         folder: ${{ env.CHARTS_DIR }}
@@ -92,7 +93,7 @@ jobs:
       shell: bash
       run: |
         helm package ${{ matrix.charts }}
-        chart=$(echo ${{ matrix.charts }} | xargs -L1 dirname)
+        chart=$(echo ${{ matrix.charts }} | awk -F "(/)" '{ print $NF }')
         echo $chart
         ls | grep $chart| sed 's/\.tgz//'
         chart_version=$(ls | grep ${chart}| sed 's/-/:/' | sed 's/\.tgz//')

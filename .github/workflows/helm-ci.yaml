@@ -62,7 +62,7 @@ jobs:
       shell: bash
       run: |
         CHARTS_TO_BUILD=()
-        for folder in ${{ steps.find-charts.outputs.folders }}; do
+        for folder in $(echo ${{ steps.find-charts.outputs.folders }} | sed 's/\"//g'); do
           echo "Changes found in $folder"
           CHARTS_TO_BUILD+=("\"$folder\"")
           CHARTS_TO_BUILD+=(",")

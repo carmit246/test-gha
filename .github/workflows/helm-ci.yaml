@@ -75,7 +75,7 @@ jobs:
   package-chart:
     runs-on: ubuntu-latest
     needs: find-charts
-    if: ${{ needs.find-charts.outputs.BUILD_CHARTS == 'true' }}
+    if: ${{ needs.find-charts.outputs.folders != '' && github.event_name != 'pull_request' }}
     strategy:
       matrix: ${{ fromJson(needs.find-charts.outputs.CHARTS_TO_BUILD) }}
     steps:
@@ -114,13 +114,6 @@ jobs:
     #     git push
 
     
-  package-release:
-    runs-on: ubuntu-latest
-    needs: find-charts
-    if: ${{ needs.find-charts.outputs.folders != '' && github.event_name != 'pull_request' }}
-    strategy:
-      matrix: ${{ fromJson(needs.find-charts.outputs.CHARTS_TO_BUILD) }}
-    steps:
     - name: package release
       shell: bash
       run: |

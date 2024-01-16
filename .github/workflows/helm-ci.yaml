@@ -7,6 +7,7 @@ on:
 
 env:
   CHARTS_DIR: "argo-test"
+  BASE_BRANCH: "main"
 
 jobs:
   find-charts:
@@ -124,15 +125,8 @@ jobs:
       run: |
         echo ${{ matrix.charts }}
         helm package ${{ inputs.chart_path }}
-          chart=$(echo ${{ inputs.chart_path }} | awk -F "(/)" '{ print $NF }')
-          echo $chart
-          ls
-          chart_version=$(ls | grep ${chart} | sed 's/\.tgz//')
-
-        helm package ${{ matrix.charts }}
-        chart=$(echo ${{ matrix.charts }} | awk -F "(/)" '{ print $NF }')
+        chart=$(echo ${{ inputs.chart_path }} | awk -F "(/)" '{ print $NF }')
         echo $chart
-        ls | grep $chart| sed 's/\.tgz//'
+        ls
         chart_version=$(ls | grep ${chart} | sed 's/\.tgz//')
-        echo chart_version: $chart_version
         echo ":white_check_mark: New helm chart release published: ${chart_version}" >> $GITHUB_STEP_SUMMARY

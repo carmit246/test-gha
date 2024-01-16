@@ -59,7 +59,7 @@ jobs:
 
     - name: Set matrix
       id: set-matrix
-      if: ${{ needs.find-charts.outputs.folders != '' }}
+      if: ${{ steps.find-charts.outputs.folders != '' }}
       shell: bash
       run: |
         CHARTS_TO_BUILD=()

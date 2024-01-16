@@ -38,7 +38,7 @@ jobs:
       run: |
         ct list-changed --chart-dirs ${{ env.CHARTS_DIR }} --since HEAD~1 --target-branch ${{ env.BASE_BRANCH }}
         folders=$(ct list-changed --chart-dirs ${{ env.CHARTS_DIR }} --since HEAD~1 --target-branch ${{ env.BASE_BRANCH }} | tr '\n' ' ')
-        echo "FOLDERS=\"$folders\"" >> $GITHUB_OUTPUT
+        echo "folders=\"$folders\"" >> $GITHUB_OUTPUT
         # if git diff --quiet --name-only HEAD~1 ${{ env.CHARTS_DIR }} ;then
         #   echo "BUILD_CHARTS=false" >> $GITHUB_OUTPUT
         # else

@@ -13,8 +13,7 @@ jobs:
   find-charts:
     runs-on: ubuntu-latest
     outputs: 
-      CHARTS_TO_BUILD: ${{ steps.find-charts.outputs.CHARTS_TO_BUILD }} 
-      BUILD_CHARTS: ${{ steps.find-charts.outputs.BUILD_CHARTS }} 
+      CHARTS_TO_BUILD: ${{ steps.set-matrix.outputs.CHARTS_TO_BUILD }} 
     steps:
     - name: checkout
       uses: actions/checkout@v4
